@@ -1,0 +1,4 @@
+C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.SharePoint\bin\Debug\d.SharePoint.dll
+C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.SharePoint\bin\Debug\d.SharePoint.pdb
+C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.SharePoint\obj\Debug\d.SharePoint.dll
+C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.SharePoint\obj\Debug\d.SharePoint.pdb
