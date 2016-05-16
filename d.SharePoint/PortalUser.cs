@@ -10,8 +10,8 @@ namespace d.SharePoint
 {
     public static class PortalUser
     {
-
-
+            
+ 
         /// <summary>
         /// Получить группу пользователей по ИД или NULL
         /// </summary>
@@ -72,17 +72,22 @@ namespace d.SharePoint
         public static SPUser GetEnsuredUserByLoginName(SPWeb web, string loginName)
         {
             SPUser ret = GetUserByLoginName(web, loginName);
-
-            if (ret == null)
+            try
             {
-                PortalSecurity.RunWithElevatedPrivileges(web, (elSite, elWeb) =>
+                if (ret == null)
                 {
-                    elWeb.AllowUnsafeUpdates = true;
-                    elWeb.Update();
-                    ret = elWeb.EnsureUser(loginName);
-                });
+                    PortalSecurity.RunWithElevatedPrivileges(web, (elSite, elWeb) =>
+                    {
+                        elWeb.AllowUnsafeUpdates = true;
+                        elWeb.Update();
+                        ret = elWeb.EnsureUser(loginName);
+                    });
+                }
             }
-
+            catch (Exception ex)
+            {
+                SPLog.Log(ex);
+            }
             return ret;
         }
 
@@ -103,7 +108,7 @@ namespace d.SharePoint
             }
             catch (UnauthorizedAccessException)
             {
-                Microsoft.SharePoint.SPSecurity.RunWithElevatedPrivileges(delegate ()
+                Microsoft.SharePoint.SPSecurity.RunWithElevatedPrivileges(delegate()
                 {
                     using (SPSite elevatedSite = new SPSite(site.ID))
                     {
@@ -131,36 +136,42 @@ namespace d.SharePoint
             {
                 using (HostingEnvironment.Impersonate())
                 {
-
-                    string groupName = domainGroup.Name;
-
-                    int ind;
-                    string domain = string.Empty;
-                    if ((ind = groupName.IndexOf("\\")) != -1)
-                        domain = groupName.Substring(0, ind);
-
-                    PrincipalSearchResult<Principal> members = null;
-                    var principalContext = new PrincipalContext(ContextType.Domain);
-                    var group = GroupPrincipal.FindByIdentity(principalContext, groupName);
-                    members = group.GetMembers();
-
-                    List<Microsoft.SharePoint.SPUser> ret = new List<Microsoft.SharePoint.SPUser>();
-
-                    foreach (Principal member in members)
+                    try
                     {
-                        UserPrincipal oUserPrincipal = UserPrincipal.FindByIdentity(principalContext, string.Format("{0}\\{1}", domain, member.SamAccountName));
-                        if (oUserPrincipal != null && (!oUserPrincipal.IsAccountLockedOut() & oUserPrincipal.AccountExpirationDate == null))
+                        string groupName = domainGroup.Name;
+
+                        int ind;
+                        string domain = string.Empty;
+                        if ((ind = groupName.IndexOf("\\")) != -1)
+                            domain = groupName.Substring(0, ind);
+
+                        PrincipalSearchResult<Principal> members = null;
+                        var principalContext = new PrincipalContext(ContextType.Domain);
+                        var group = GroupPrincipal.FindByIdentity(principalContext, groupName);
+                        members = group.GetMembers();
+
+                        List<Microsoft.SharePoint.SPUser> ret = new List<Microsoft.SharePoint.SPUser>();
+
+                        foreach (Principal member in members)
                         {
-                            Microsoft.SharePoint.SPUser user;
-                            if ((user = GetEnsuredUserByLoginName(web, string.Format("{0}\\{1}", domain, member.SamAccountName))) != null)
-                                ret.Add(user);
+                            UserPrincipal oUserPrincipal = UserPrincipal.FindByIdentity(principalContext, string.Format("{0}\\{1}", domain, member.SamAccountName));
+                            if (oUserPrincipal != null && (!oUserPrincipal.IsAccountLockedOut() & oUserPrincipal.AccountExpirationDate == null))
+                            {
+                                Microsoft.SharePoint.SPUser user;
+                                if ((user = GetEnsuredUserByLoginName(web, string.Format("{0}\\{1}", domain, member.SamAccountName))) != null)
+                                    ret.Add(user);
+                            }
+
+
                         }
 
-
+                        return ret;
                     }
-
-                    return ret;
-
+                    catch (Exception x)
+                    {
+                        SPLog.Log(x);
+                    }
+                    return new List<Microsoft.SharePoint.SPUser>();
                 }
             }
             else

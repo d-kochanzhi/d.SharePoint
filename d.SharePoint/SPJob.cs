@@ -8,27 +8,41 @@ namespace d.SharePoint.SPJob
 
     public class JobFactory
     {
-        public static void Register<TJobType>(string jobName, SPWeb web, SPSchedule schedule) where TJobType : Job
+        public static bool Register<TJobType>(string jobName, SPWeb web, SPSchedule schedule) where TJobType : Job
         {
-            if (web == null || web.Site == null)
+            bool result;
+            try
             {
-                return;
-            }
-            JobFactory.Unregister(jobName, web);
-
-            TJobType tJobType = (TJobType)((object)Activator.CreateInstance(typeof(TJobType), new object[]
+                if (web == null || web.Site == null)
                 {
-                        jobName,
-                        web
-                }));
-            tJobType.Schedule = (schedule ?? tJobType.GetDefaultShedule());
-            tJobType.Update();
+                    result = false;
+                    return result;
+                }
+                JobFactory.Unregister(jobName, web);
+
+                TJobType tJobType = (TJobType)((object)Activator.CreateInstance(typeof(TJobType), new object[]
+		            {                       
+			            jobName,
+			            web
+		            }));
+                tJobType.Schedule = (schedule ?? tJobType.GetDefaultShedule());
+                tJobType.Update();
+
+                result = true;
+            }
+            catch (Exception x)
+            {
+                SPLog.Log(System.Reflection.MethodBase.GetCurrentMethod(), x);
+                result = false;
+            }
+           
+            return result;
         }
 
 
-        public static void Register<TJobType>(string jobName, SPWeb web) where TJobType : Job
+        public static bool Register<TJobType>(string jobName, SPWeb web) where TJobType : Job
         {
-            JobFactory.Register<TJobType>(jobName, web, null);
+            return JobFactory.Register<TJobType>(jobName, web, null);
         }
 
         public static void Unregister(string jobName, SPWeb web)
@@ -76,10 +90,17 @@ namespace d.SharePoint.SPJob
 
             if (string.IsNullOrEmpty(text))
             {
+
                 throw new ArgumentException("Web.Url");
             }
-
-            d.SharePoint.PortalSecurity.RunWithElevatedPrivileges(new Microsoft.SharePoint.SPSecurity.CodeToRunElevated(this.CodeToRun));
+            try
+            {
+                d.SharePoint.PortalSecurity.RunWithElevatedPrivileges(new Microsoft.SharePoint.SPSecurity.CodeToRunElevated(this.CodeToRun));
+            }
+            catch (Exception x)
+            {
+                SPLog.Log(System.Reflection.MethodBase.GetCurrentMethod(),x);
+            }
 
         }
 
