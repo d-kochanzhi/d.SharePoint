@@ -2,3 +2,15 @@ C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.
 C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.SharePoint\bin\Debug\d.SharePoint.pdb
 C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.SharePoint\obj\Debug\d.SharePoint.dll
 C:\Users\dkochanzhi\Documents\Visual Studio 2013\Projects\dzsoft\d.SharePoint\d.SharePoint\obj\Debug\d.SharePoint.pdb
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\d.SharePoint.dll
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\d.SharePoint.pdb
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\Microsoft.SharePoint.dll
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\Microsoft.SharePoint.Search.dll
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\Microsoft.Web.CommandUI.dll
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\Microsoft.SharePoint.Security.dll
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\Microsoft.SharePoint.xml
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\Microsoft.SharePoint.Search.xml
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\bin\Debug\Microsoft.SharePoint.Security.xml
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\obj\Debug\d.SharePoint.csprojResolveAssemblyReference.cache
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\obj\Debug\d.SharePoint.dll
+E:\YandexDisk\GitHub\d.SharePoint\d.SharePoint\obj\Debug\d.SharePoint.pdb
