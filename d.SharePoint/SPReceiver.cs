@@ -1,24 +1,24 @@
 ﻿using System;
 using Microsoft.SharePoint;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace d.SharePoint.SPReceiver
 {
     public class ReceiverFactory
     {
         public static void Register<TReceiverType>(SPWeb web, string listName, SPEventReceiverType receiverType) where TReceiverType : SPItemEventReceiver
-        {
+        {  
             SPList list = web.Lists[listName];
-
             SPEventReceiverDefinition newReceiver = list.EventReceivers.Add();
-            newReceiver.Class = typeof(TReceiverType).Name;
+            newReceiver.Class = typeof(TReceiverType).FullName;
             newReceiver.Assembly = typeof(TReceiverType).Assembly.FullName;
             newReceiver.SequenceNumber = 3000;
             newReceiver.Type = receiverType;
             newReceiver.Update();
-
         }
-
+        
         public static void Unregister<TReceiverType>(SPWeb web, string listName, SPEventReceiverType receiverType) where TReceiverType : SPItemEventReceiver
         {
             SPList list = web.Lists[listName];
